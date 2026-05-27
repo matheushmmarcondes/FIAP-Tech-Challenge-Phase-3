@@ -6,9 +6,9 @@ Monorepo do **Tech Challenge FIAP — Fase 3**: interface gráfica em React (Nex
 
 ```text
 .
-├── tech-challenge-phase-2/       # Back-end (Node.js + Express + MongoDB)
-├── tech-challenge-phase-2-web/   # Front-end (Next.js + React + TypeScript)
-├── docker-compose.fullstack.yml  # Orquestração full stack (Mongo + API + Web)
+├── backend/       # Back-end (Node.js + Express + MongoDB)
+├── frontend/   # Front-end (Next.js + React + TypeScript)
+├── docker-compose.yml  # Orquestração full stack (Mongo + API + Web)
 └── docs/
     └── ENTREGA.md                # Documento de entrega (arquitetura, uso, relato)
 ```
@@ -32,7 +32,7 @@ Monorepo do **Tech Challenge FIAP — Fase 3**: interface gráfica em React (Nex
 Na raiz do repositório:
 
 ```bash
-docker compose -f docker-compose.fullstack.yml up --build
+docker compose -f docker-compose.yml up --build
 ```
 
 | Serviço   | URL |
@@ -41,6 +41,9 @@ docker compose -f docker-compose.fullstack.yml up --build
 | API       | http://localhost:3000/api |
 | Swagger   | http://localhost:3000/api-docs |
 | MongoDB   | localhost:27017 |
+
+- **Índice da API:** `GET http://localhost:3000/api` retorna JSON com links para Swagger (`/api-docs`) e rotas como `/api/posts`.
+- **Health:** `GET http://localhost:3000/` confirma que o servidor está no ar.
 
 ### Credenciais padrão (docente)
 
@@ -54,7 +57,7 @@ docker compose -f docker-compose.fullstack.yml up --build
 ### 1. Back-end
 
 ```bash
-cd tech-challenge-phase-2
+cd backend
 cp .env.example .env
 npm install
 docker compose up -d mongo   # ou MongoDB local
@@ -64,7 +67,7 @@ npm run dev
 ### 2. Front-end
 
 ```bash
-cd tech-challenge-phase-2-web
+cd frontend
 cp .env.local.example .env.local
 npm install
 npm run dev
@@ -85,8 +88,8 @@ Acesse http://localhost:3001 (front) e http://localhost:3000/api (API).
 
 Workflows na raiz em `.github/workflows/`:
 
-- **Front-end:** lint + build (`tech-challenge-phase-2-web`)
-- **Back-end:** testes com MongoDB em serviço (`tech-challenge-phase-2`)
+- **Front-end:** lint + build (`frontend`)
+- **Back-end:** testes com MongoDB em serviço (`backend`)
 
 Disparam em push e pull request para `main` ou `master`.
 
@@ -95,8 +98,8 @@ Disparam em push e pull request para `main` ou `master`.
 | Documento | Descrição |
 |-----------|-----------|
 | [docs/ENTREGA.md](docs/ENTREGA.md) | Arquitetura, guia de uso e relato da equipe |
-| [tech-challenge-phase-2-web/README.md](tech-challenge-phase-2-web/README.md) | Setup e detalhes do front-end |
-| [tech-challenge-phase-2/README.md](tech-challenge-phase-2/README.md) | Endpoints, setup e testes do back-end |
+| [frontend/README.md](frontend/README.md) | Setup e detalhes do front-end |
+| [backend/README.md](backend/README.md) | Endpoints, setup e testes do back-end |
 
 ## Entrega FIAP
 

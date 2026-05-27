@@ -34,7 +34,7 @@ O PAIF Blog é uma aplicação full stack composta por três camadas principais:
 **Estrutura de pastas:**
 
 ```text
-tech-challenge-phase-2-web/src/
+frontend/src/
 ├── app/              # Rotas (páginas)
 │   ├── page.tsx              → Lista de posts + busca
 │   ├── posts/[id]/page.tsx   → Leitura de post
@@ -85,7 +85,7 @@ tech-challenge-phase-2-web/src/
 
 ### 1.5 Infraestrutura e CI/CD
 
-- **Docker:** cada camada possui `Dockerfile`; o `docker-compose.fullstack.yml` na raiz sobe MongoDB, API e front-end juntos.
+- **Docker:** cada camada possui `Dockerfile`; o `docker-compose.yml` na raiz sobe MongoDB, API e front-end juntos.
 - **GitHub Actions:** workflows na raiz do repositório executam lint + build (front) e testes automatizados (back) a cada push/PR.
 
 ---
@@ -118,17 +118,17 @@ tech-challenge-phase-2-web/src/
 **Opção A — Docker Compose (recomendada):**
 
 ```bash
-docker compose -f docker-compose.fullstack.yml up --build
+docker compose -f docker-compose.yml up --build
 ```
 
 **Opção B — Desenvolvimento local:**
 
 ```bash
 # Terminal 1 — Back-end
-cd tech-challenge-phase-2 && npm run dev
+cd backend && npm run dev
 
 # Terminal 2 — Front-end
-cd tech-challenge-phase-2-web && npm run dev
+cd frontend && npm run dev
 ```
 
 ### 2.4 Acessibilidade
@@ -169,7 +169,7 @@ Implementamos autenticação via JWT com Context API. O desafio foi garantir que
 
 #### Docker multi-serviço
 
-Orquestrar MongoDB, API e front-end em um único `docker-compose.fullstack.yml` demandou configurar dependências entre serviços, variáveis de ambiente e o build standalone do Next.js (`output: "standalone"` no `next.config.ts`).
+Orquestrar MongoDB, API e front-end em um único `docker-compose.yml` demandou configurar dependências entre serviços, variáveis de ambiente e o build standalone do Next.js (`output: "standalone"` no `next.config.ts`).
 
 #### Gerenciamento de estado
 
@@ -196,6 +196,6 @@ Optamos pela Context API em vez de Redux por ser suficiente para o escopo do pro
 ## 4. Referências
 
 - [README raiz](../README.md) — Setup geral do monorepo
-- [README front-end](../tech-challenge-phase-2-web/README.md) — Detalhes técnicos do front
-- [README back-end](../tech-challenge-phase-2/README.md) — Endpoints e testes da API
+- [README front-end](../frontend/README.md) — Detalhes técnicos do front
+- [README back-end](../backend/README.md) — Endpoints e testes da API
 - Swagger (local): http://localhost:3000/api-docs
