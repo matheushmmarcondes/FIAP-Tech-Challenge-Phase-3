@@ -1,0 +1,87 @@
+name: CI — PAIF Full Stack
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  frontend:
+    name: Front-end (lint + build)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tech-challenge-phase-2-web
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: tech-challenge-phase-2-web/package-lock.json
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:3000/api
+        run: npm run build
+
+  backend:
+    name: Back-end (testes)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tech-challenge-phase-2
+
+    services:
+      mongo:
+        image: mongo:7
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd="mongosh --eval 'db.runCommand({ ping: 1 })'"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      PORT: 3000
+      MONGO_URI: mongodb://127.0.0.1:27017/blogdb
+      JWT_SECRET: test_jwt_secret_key
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: tech-challenge-phase-2/package-lock.json
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Aguardar MongoDB
+        run: |
+          for i in {1..20}; do
+            nc -z 127.0.0.1 27017 && echo "Mongo pronto" && exit 0
+            echo "Aguardando Mongo..."
+            sleep 2
+          done
+          echo "Mongo não ficou pronto a tempo"
+          exit 1
+
+      - name: Rodar testes
+        run: npm test
